@@ -16,7 +16,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 aux_source_directory("src" SOURCES)
 
 # add glm
-
+include(cmake/glm.cmake)
 
 # create executable
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
