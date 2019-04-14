@@ -18,6 +18,9 @@ aux_source_directory("src" SOURCES)
 # add glm
 include(cmake/glm.cmake)
 
+# add glfw
+include(cmake/glfw.cmake)
+
 # create executable
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
