@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 
 #include "Gui.h"
-#include "RenderObject.h"
 #include "Shader.h"
+#include "VAO.h"
 #include <GLFW/glfw3.h>
 #include <cstdlib>
 #include <iostream>
@@ -19,9 +19,25 @@ int main(int argc, char *argv[]) {
   Shader dirt_cube_shader("src/shaders/cube_vert.glsl", "",
                           "src/shaders/cube_frag.glsl");
 
-  while (!glfwWindowShouldClose(g.window)) {
+  std::vector<glm::vec3> tri_vert = {
+    {-0.5f, 0.0f, 0.0f},
+    {0.5f, 0.0f, 0.0f},
+    {0.0f, 1.0f, 0.0f}
+  };
 
-    g.SwapPoll();
+  VertexArr tri_vao;
+  tri_vao.setLayout({3});
+  tri_vao.vb.bindVertices(tri_vert);
+
+  while (!glfwWindowShouldClose(g.window)) {
+    g.clearRender();
+
+    dirt_cube_shader.use();
+    tri_vao.bind();
+    glDrawArrays( GL_TRIANGLES, 0,
+                          tri_vert.size() );
+
+    g.swapPoll();
   }
   return 0;
 }

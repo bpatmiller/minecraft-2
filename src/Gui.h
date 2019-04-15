@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-#include "RenderObject.h"
+#include "VAO.h"
 #include <GLFW/glfw3.h>
 #include <cstdlib>
 #include <iostream>
@@ -49,9 +49,23 @@ public:
     glfwTerminate();
   }
 
-  void SwapPoll() {
+  void swapPoll() {
     glfwSwapBuffers(window);
     glfwPollEvents();
+  }
+
+  void clearRender() {
+    glfwGetFramebufferSize(window, &window_width, &window_height);
+    glViewport(0, 0, window_width, window_height);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDepthFunc(GL_LESS);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glCullFace(GL_BACK);
   }
 };
 
