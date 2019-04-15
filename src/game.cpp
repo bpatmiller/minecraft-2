@@ -1,5 +1,4 @@
-#include "Game.h"
-
+#include "game.h"
 
 void Game::err() {
     std::cout << "GLFW not initialized" << std::endl;
@@ -7,11 +6,10 @@ void Game::err() {
 }
 
 void Game::init() {
-    // if (!glfwInit())
-    // {
-    // err();
-    // }
-    std::cout << "lol";
+    if (!glfwInit())
+    {
+    err();
+    }
 }
 
 void Game::loop() {

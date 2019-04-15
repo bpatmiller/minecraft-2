@@ -1,7 +1,6 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <debuggl.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>

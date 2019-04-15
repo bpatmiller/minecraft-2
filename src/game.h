@@ -1,25 +1,26 @@
 #ifndef GAME_H
 #define GAME_H
 
-// #include <glad/glad.h>
-// #include <GLFW/glfw3.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 #include <cstdlib>
-// #include <debuggl.h>
 #include <iostream>
 #include <string>
 
 class Game {
 public:
   Game() {
-    window_title = "minecraft";
-    std::cout << "init" << std::endl;
+    std::cout << "lol222";
   }
 
   static void err();
 
   void loop();
   void init();
+
+
+
 
 
   std::string window_title;

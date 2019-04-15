@@ -16,10 +16,10 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 # source / lib directories
-set(SOURCES "src")
+set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+aux_source_directory(${SRC_DIR} SOURCES)
+add_executable(${PROJECT_NAME} ${SOURCES})
 
-# executable definitions
-add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES})
 
 # GLFW
 find_package(PkgConfig REQUIRED)
