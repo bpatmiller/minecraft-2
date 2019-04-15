@@ -30,7 +30,6 @@ struct VertexArr {
   unsigned int vao;
   VertexBuf vb;
   VertexBuf ib;
-  bool instanced = false;
   int attCt = 0;
 
   VertexArr() { glGenVertexArrays(1, &vao); }
@@ -39,7 +38,7 @@ struct VertexArr {
 
   void bind() { glBindVertexArray(vao); }
 
-  void buf_bind() {
+  void buf_bind(bool instanced) {
     if (instanced) {
       ib.bind();
     } else {
@@ -49,9 +48,9 @@ struct VertexArr {
 
   static void unbind() { glBindVertexArray(0); }
 
-  void setLayout(std::initializer_list<uint> sizes) {
+  void setLayout(std::initializer_list<uint> sizes, bool instanced) {
     bind();
-    buf_bind();
+    buf_bind(instanced);
 
     int stride = 0;
     size_t offset = 0;

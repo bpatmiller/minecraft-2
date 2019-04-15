@@ -20,22 +20,30 @@ int main(int argc, char *argv[]) {
                           "src/shaders/cube_frag.glsl");
 
   std::vector<glm::vec3> tri_vert = {
-    {-0.5f, 0.0f, 0.0f},
-    {0.5f, 0.0f, 0.0f},
+    {-0.3f, 0.0f, 0.0f},
+    {0.3f, 0.0f, 0.0f},
     {0.0f, 1.0f, 0.0f}
   };
 
+  std::vector<glm::vec3> tri_offset = {
+    {0.0f, 0.0f, 0.0f},
+    {0.0f, -0.5f, 0.0f}
+  };
+
   VertexArr tri_vao;
-  tri_vao.setLayout({3});
   tri_vao.vb.bindVertices(tri_vert);
+  tri_vao.ib.bindVertices(tri_offset);
+  tri_vao.setLayout({3}, false);
+  tri_vao.setLayout({3}, true);
 
   while (!glfwWindowShouldClose(g.window)) {
     g.clearRender();
 
     dirt_cube_shader.use();
     tri_vao.bind();
-    glDrawArrays( GL_TRIANGLES, 0,
-                          tri_vert.size() );
+    glDrawArraysInstanced( GL_TRIANGLES, 0,
+                          tri_vert.size(), tri_offset.size() );
+
 
     g.swapPoll();
   }
