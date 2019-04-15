@@ -1,4 +1,4 @@
-R"zzz(#version 330 core
+#version 330 core
 uniform mat4 bone_transform; // transform the cylinder to the correct configuration
 uniform mat4 bone_orientation;
 const float kPi = 3.1415926535897932384626433832795;
@@ -19,4 +19,3 @@ void main() {
                              cyl_rad * sin(2.0 * kPi * vertex_position.x),
                              1.);
 }
-)zzz"
