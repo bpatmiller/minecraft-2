@@ -2,14 +2,25 @@
 
 struct Cube {
   VertexArr VAO;
-//   std::vector<glm::vec3> vertices = {
-//     {0.0f, 0.0f, 0.0f},
-//     {},
-//     {}
-//     {}
-//     {}
-//     {}
-//   }
+  std::vector<glm::vec3> cube_vertices = {
+    {0.0f, 0.0f, 0.0f},
+    {0.0f, 0.0f, 1.0f},
+    {1.0f, 0.0f, 0.0f},
+    {1.0f, 0.0f, 1.0f},
+    {0.0f, 1.0f, 0.0f},
+    {0.0f, 1.0f, 1.0f},
+    {1.0f, 1.0f, 0.0f},
+    {1.0f, 1.0f, 1.0f}
+  };
+
+  std::vector<glm::uvec3> cube_indices = {
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+  };
 
   std::vector<glm::vec3> vertices = {
       {-0.3f, 0.0f, 0.0f}, {0.3f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}};

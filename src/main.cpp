@@ -28,6 +28,11 @@ int main(int argc, char *argv[]) {
 
     // dirt draw pass
     dirt_cube_shader.use();
+    // pass uniforms
+    dirt_cube_shader.setMat("projection", g.projection_matrix);
+    dirt_cube_shader.setMat("view", g.view_matrix);
+    dirt_cube_shader.setMat("model", g.model_matrix);
+    // render
     dirt_cube.draw();
 
     g.swapPoll();

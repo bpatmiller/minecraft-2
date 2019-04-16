@@ -3,6 +3,9 @@
 
 #include <glad/glad.h>
 
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "VAO.h"
 #include <GLFW/glfw3.h>
 #include <cstdlib>
@@ -19,7 +22,29 @@ public:
   int window_width, window_height;
   GLFWwindow *window;
 
+  float kFov = 45.0f;
+  float kNear = 0.1;
+  float kFar = 1000.0f;
+  float aspect;
+
+  float camera_distance = 5.0f;
+	glm::vec3 eye = glm::vec3(0.0f, 0.1f, camera_distance);
+	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 look = glm::vec3(0.0f, 0.0f, -1.0f);
+	glm::vec3 tangent = glm::cross(look, up);
+	glm::vec3 center = eye - camera_distance * look;
+	glm::mat3 orientation = glm::mat3(tangent, up, look);
+	glm::vec4 light_position;
+
+	glm::mat4 view_matrix = glm::lookAt(eye, center, up);
+	glm::mat4 projection_matrix = glm::perspective((float)(kFov * (M_PI / 180.0f)), aspect, kNear, kFar);
+
+	glm::mat4 model_matrix = glm::mat4(1.0f);
+
+
+
   Gui(int w, int h, std::string title) {
+    aspect = static_cast<float>(w) / h;
     window_width = w;
     window_height = h;
     window_title = title;
@@ -61,11 +86,11 @@ public:
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_BLEND);
-    glEnable(GL_CULL_FACE);
+    // glEnable(GL_CULL_FACE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDepthFunc(GL_LESS);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glCullFace(GL_BACK);
+    // glCullFace(GL_BACK);
   }
 };
 
