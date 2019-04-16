@@ -24,7 +24,8 @@ int main(int argc, char *argv[]) {
   glfwSetKeyCallback(g.window, Gui::KeyCallback);
 
   // dirt cube shader/vao
-  Shader dirt_cube_shader("src/shaders/cube_vert.glsl", "",
+  Shader dirt_cube_shader("src/shaders/cube_vert.glsl",
+                          "src/shaders/cube_geom.glsl",
                           "src/shaders/cube_frag.glsl");
   Cube dirt_cube;
 

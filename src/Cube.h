@@ -46,8 +46,5 @@ struct Cube {
         offsets.emplace_back(glm::vec3(x, y, z));
       }
     }
-
-    // for (auto v : )
-    // std::cout << glm::to_string(offsets) << std::endl;
   }
 };
