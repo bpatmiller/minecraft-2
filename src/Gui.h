@@ -18,26 +18,36 @@ static void error_callback(int error, const char *description) {
 
 class Gui {
 public:
-  std::string window_title;
-  int window_width, window_height;
   GLFWwindow *window;
+
+  std::string window_title;
+  int window_width;
+  int window_height;
+
+  int last_x = 0;
+  int last_y = 0;
+  int current_x = 0;
+  int current_y = 0;
+  bool mouse_pressed = false;
 
   // camera properties
   glm::vec3 eye = glm::vec3(0.0f, 2.0f, 2.0f);
   glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
   glm::vec3 focus = glm::vec3(0.0f, 0.0f, 0.0f);
-
+  // secondary camera properties
+  float camera_distance = glm::distance(eye, focus);
+  glm::vec3 look = glm::normalize(focus - eye);
+  glm::vec3 tangent = glm::cross(look, up);
+  glm::mat3 orientation = glm::mat3(tangent, up, look);
   // camera uniforms
   glm::mat4 view_matrix;
   glm::mat4 projection_matrix;
   glm::mat4 model_matrix;
 
   Gui(int w, int h, std::string title) {
-    // window settings
     window_width = w;
     window_height = h;
     window_title = title;
-
     // init glfw
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
@@ -60,40 +70,19 @@ public:
     glfwTerminate();
   }
 
-  void swapPoll() {
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-  }
-
-  void clearRender() {
-    glfwGetFramebufferSize(window, &window_width, &window_height);
-    glViewport(0, 0, window_width, window_height);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    // glEnable(GL_DEPTH_TEST);
-    // glEnable(GL_MULTISAMPLE);
-    // glEnable(GL_BLEND);
-    // // glEnable(GL_CULL_FACE);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // glDepthFunc(GL_LESS);
-    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    // glCullFace(GL_BACK);
-    updateMatrices();
-  }
-
-  void updateMatrices() {
-    projection_matrix =
-        glm::perspective(glm::radians(100.f),
-                         ((float)window_width) / window_height, 0.1f, 100.f);
-    view_matrix = glm::lookAt(eye, focus, up);
-    model_matrix = glm::mat4(1.0f);
-  }
+  void swapPoll();
+  void clearRender();
+  void updateMatrices();
 
   void mouseButtonCallback(int button, int action, int mods);
-  void mousePosCallback(int mouse_x, int mouse_y);
+  void mousePosCallback(double mouse_x, double mouse_y);
+  void keyCallback(int key, int scancode, int action, int mods);
   static void MouseButtonCallback(GLFWwindow *window, int button, int action,
                                   int mods);
   static void MousePosCallback(GLFWwindow *window, double mouse_x,
                                double mouse_y);
+  static void KeyCallback(GLFWwindow *window, int key, int scancode, int action,
+                          int mods);
 };
 
 #endif

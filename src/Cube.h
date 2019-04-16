@@ -19,7 +19,7 @@ struct Cube {
   std::vector<glm::vec3> offsets = {{0.0f, 0.0f, 0.0f}};
 
   Cube() {
-    // generateTerrain();
+    generateTerrain();
     VAO.vb.bindVertices(vertices);
     VAO.ib.bindVertices(offsets);
     VAO.setLayout({3}, false);

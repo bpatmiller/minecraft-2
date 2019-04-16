@@ -18,8 +18,9 @@ int main(int argc, char *argv[]) {
   Gui g(window_width, window_height, window_title);
 
   // set input callbacks
-  glfwSetCursorPosCallback(g.window, g.MousePosCallback);
-  glfwSetMouseButtonCallback(g.window, g.MouseButtonCallback);
+  glfwSetCursorPosCallback(g.window, Gui::MousePosCallback);
+  glfwSetMouseButtonCallback(g.window, Gui::MouseButtonCallback);
+  glfwSetKeyCallback(g.window, Gui::KeyCallback);
 
   // dirt cube shader/vao
   Shader dirt_cube_shader("src/shaders/cube_vert.glsl", "",
