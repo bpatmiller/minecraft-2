@@ -4,8 +4,6 @@
 
 struct Cube {
   VertexArr VAO;
-  float minxz = 5.0;
-  float miny = 1.0;
 
   std::vector<glm::vec3> vertices = {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f},
                                      {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 1.0f},
@@ -21,7 +19,7 @@ struct Cube {
   std::vector<glm::vec3> offsets = {{0.0f, 0.0f, 0.0f}};
 
   Cube() {
-    // generateTerrain();
+    generateTerrain();
     VAO.vb.bindVertices(vertices);
     VAO.ib.bindVertices(offsets);
     VAO.setLayout({3}, false);
@@ -37,10 +35,10 @@ struct Cube {
   void generateTerrain() {
     offsets.clear();
 
-    int minx = -5;
-    int maxx = 5;
-    int minz = -5;
-    int maxz = 5;
+    int minx = -100;
+    int maxx = 100;
+    int minz = -100;
+    int maxz = 100;
 
     for (int x = minx; x < maxx; x++) {
       for (int z = minz; z < maxz; z++) {
