@@ -1,6 +1,8 @@
 #version 330 core
 out vec4 fragment_color;
 
+uniform vec3 light_position;
+
 in vec3 normal;
 in vec3 world_position;
 
@@ -83,5 +85,8 @@ void main() {
     vec3 brown = vec3(0.4392, 0.2824, 0.2353);
     float perl = 0.5 + 0.5 * cnoise(world_position);
 
-    fragment_color = vec4(perl * brown, 1.0);
+    vec3 L = normalize(light_position - world_position);
+    float kd = dot(L, normal);
+
+    fragment_color = vec4(kd * perl * brown, 1.0);
 }

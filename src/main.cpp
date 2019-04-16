@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
     dirt_cube_shader.setMat("projection", g.projection_matrix);
     dirt_cube_shader.setMat("view", g.view_matrix);
     dirt_cube_shader.setMat("model", g.model_matrix);
+    dirt_cube_shader.setVec3("light_position", g.light_position);
     // render
     dirt_cube.draw();
 

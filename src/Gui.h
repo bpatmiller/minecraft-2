@@ -43,6 +43,7 @@ public:
   glm::mat4 view_matrix;
   glm::mat4 projection_matrix;
   glm::mat4 model_matrix;
+  glm::vec3 light_position = glm::vec3(-3.0f, 10.0f, 5.0f);
 
   Gui(int w, int h, std::string title) {
     window_width = w;
