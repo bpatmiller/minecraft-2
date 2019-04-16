@@ -11,10 +11,8 @@ struct Cube {
                                      {1.0f, 1.0f, 0.0f}, {1.0f, 1.0f, 1.0f}};
 
   std::vector<glm::uvec3> indices = {
-      {0, 2, 1}, {1, 2, 3}, {4, 5, 6}, {5, 7, 6}, {0, 1, 5},
-      {0, 5, 4}, {2, 7, 3}, {2, 6, 7}, {3, 5, 1}, {3, 7, 5},
-      {0, 6, 2}, {0, 4, 6}
-  };
+      {0, 2, 1}, {1, 2, 3}, {4, 5, 6}, {5, 7, 6}, {0, 1, 5}, {0, 5, 4},
+      {2, 7, 3}, {2, 6, 7}, {3, 5, 1}, {3, 7, 5}, {0, 6, 2}, {0, 4, 6}};
 
   std::vector<glm::vec3> offsets = {{0.0f, 0.0f, 0.0f}};
 
@@ -32,9 +30,7 @@ struct Cube {
                             indices.data(), offsets.size());
   }
 
-  float perlin(int x, int z) {
-    return 1.0f;
-  }
+  float perlin(int x, int z) { return 1.0f; }
 
   void generateTerrain() {
     offsets.clear();

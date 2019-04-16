@@ -24,28 +24,21 @@ public:
   int window_width;
   int window_height;
 
-  int last_x = 0;
-  int last_y = 0;
-  int current_x = 0;
-  int current_y = 0;
+  int current_x = -1;
+  int current_y = -1;
   bool mouse_pressed = false;
-
   bool on_ground = false;
+  glm::vec3 light_position = glm::vec3(-3.0f, 10.0f, 5.0f);
 
   // camera properties
-  glm::vec3 eye = glm::vec3(0.0f, 3.0f, 3.0f);
-  glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-  glm::vec3 focus = glm::vec3(0.0f, 0.0f, 0.0f);
-  // secondary camera properties
-  float camera_distance = glm::distance(eye, focus);
-  glm::vec3 look = glm::normalize(focus - eye);
-  glm::vec3 tangent = glm::cross(look, up);
-  glm::mat3 orientation = glm::mat3(tangent, up, look);
+  glm::vec3 eye = glm::vec3(0, 3, 3);
+  glm::quat orientation = glm::quat(glm::mat4(1.0f));
+  glm::vec3 fdir;
+  glm::vec3 sdir;
   // camera uniforms
   glm::mat4 view_matrix;
   glm::mat4 projection_matrix;
   glm::mat4 model_matrix;
-  glm::vec3 light_position = glm::vec3(-3.0f, 10.0f, 5.0f);
 
   Gui(int w, int h, std::string title) {
     window_width = w;
@@ -66,6 +59,7 @@ public:
     glfwMakeContextCurrent(window);
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     glfwSwapInterval(1);
+    updateMatrices();
   }
 
   ~Gui() {
@@ -76,7 +70,7 @@ public:
   void swapPoll();
   void clearRender();
   void updateMatrices();
-  void checkGround(std::vector<glm::vec3>& offsets);
+  void checkGround(std::vector<glm::vec3> &offsets);
   void gravity();
 
   void mouseButtonCallback(int button, int action, int mods);

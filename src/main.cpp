@@ -35,7 +35,6 @@ int main(int argc, char *argv[]) {
     // g.checkGround(dirt_cube.offsets);
     // g.gravity();
 
-
     // dirt draw pass
     dirt_cube_shader.use();
     // pass uniforms
