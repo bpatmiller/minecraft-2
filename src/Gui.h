@@ -31,7 +31,7 @@ public:
   glm::vec3 light_position = glm::vec3(-3.0f, 10.0f, 5.0f);
 
   // camera properties
-  glm::vec3 eye = glm::vec3(0, 3, 3);
+  glm::vec3 eye = glm::vec3(0, 5, 5);
   glm::quat orientation = glm::quat(glm::mat4(1.0f));
   glm::vec3 fdir;
   glm::vec3 sdir;
