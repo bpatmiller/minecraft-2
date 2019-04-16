@@ -72,9 +72,8 @@ void Gui::mousePosCallback(double mouse_x, double mouse_y) {
 
   glm::mat4 inv = glm::inverse(glm::mat4_cast(orientation));
 
-  fdir = glm::vec3( inv * glm::vec4(0, 0, -1, 1));
-  sdir = glm::vec3( inv * glm::vec4(1, 0, 0, 1));
-
+  fdir = glm::vec3(inv * glm::vec4(0, 0, -1, 1));
+  sdir = glm::vec3(inv * glm::vec4(1, 0, 0, 1));
 }
 
 void Gui::keyCallback(int key, int scancode, int action, int mods) {
