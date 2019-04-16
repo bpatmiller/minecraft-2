@@ -29,7 +29,10 @@ public:
   bool mouse_pressed = false;
   bool on_ground = false;
   bool flying = false;
-  bool collide = false;
+  bool colw = false;
+  bool cols = false;
+  bool cola = false;
+  bool cold = false;
   float fall_speed = 0.0f;
   glm::vec3 light_position = glm::vec3(-3.0f, 10.0f, 5.0f);
 
@@ -38,6 +41,8 @@ public:
   glm::quat orientation = glm::quat(glm::mat4(1.0f));
   glm::vec3 fdir = glm::vec3(0, 0, -1);
   glm::vec3 sdir = glm::vec3(1, 0, 0);
+  glm::vec3 gfdir = fdir;
+  glm::vec3 gsdir = sdir;
   // camera uniforms
   glm::mat4 view_matrix;
   glm::mat4 projection_matrix;
@@ -69,6 +74,9 @@ public:
     glfwDestroyWindow(window);
     glfwTerminate();
   }
+
+  bool groundBlock(glm::vec3 &block);
+  bool collideBlock(glm::vec3 &block, glm::vec3 &offset, float move_speed);
 
   void swapPoll();
   void clearRender();

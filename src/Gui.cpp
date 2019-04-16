@@ -5,11 +5,27 @@
 
 void Gui::gravity() {
   if (!on_ground && !flying) {
-    eye = eye + glm::vec3(0.0f, - fall_speed, 0.0f);
+    eye = eye + glm::vec3(0.0f, -fall_speed, 0.0f);
     fall_speed += 0.01;
   } else {
     fall_speed = 0.025;
   }
+}
+
+bool Gui::groundBlock(glm::vec3 &block) {
+  bool x = (block[0] <= eye[0] && eye[0] <= block[0] + 1.0f);
+  bool y = (block[1] + 2.75f >= eye[1]);
+  bool z = (block[2] <= eye[2] && eye[2] <= block[2] + 1.0f);
+  return (x && y && z);
+}
+
+bool Gui::collideBlock(glm::vec3 &block, glm::vec3 &offset, float move_speed) {
+  glm::vec3 new_eye = eye + (offset * move_speed);
+
+  bool x = (block[0] <= new_eye[0] && new_eye[0] <= block[0] + 1.0f);
+  bool y = (block[1] >= new_eye[1] - 1.75 && block[1] <= new_eye[1] - 0.75);
+  bool z = (block[2] <= new_eye[2] && new_eye[2] <= block[2] + 1.0f);
+  return (x && y && z);
 }
 
 void Gui::checkGround(std::vector<glm::vec3> &offsets) {
@@ -17,26 +33,18 @@ void Gui::checkGround(std::vector<glm::vec3> &offsets) {
     return;
 
   on_ground = false;
-  collide = false;
+  colw = false;
+  cols = false;
+  cola = false;
+  cold = false;
   for (auto block : offsets) {
-    // offset of a unit (0 - 1) cube
-    bool x = (block[0] <= eye[0] && eye[0] <= block[0] + 1.0f);
-    bool y = (block[1] + 2.75f >= eye[1]);
-    bool z = (block[2] <= eye[2] && eye[2] <= block[2] + 1.0f);
-    bool y_collide = (block[1] >= eye[1] - 1.75 && block[1] <= eye[1] - 0.75);
-
-    if (x && y && z) {
+    if (groundBlock(block))
       on_ground = true;
-    }
-    if (x && z && y_collide) {
-      glm::vec3 block_center(block[0]+0.5f, eye[1], block[2]+0.5f);
-      glm::vec3 push_vec = glm::normalize(eye - block_center);
-      eye += 0.15f * push_vec;
-      collide = true;
-    }
-    if (on_ground && collide) {
-      return;
-    }
+
+    colw = (colw || collideBlock(block, gfdir, 0.25f));
+    cols = (cols || collideBlock(block, gfdir, -0.25f));
+    cola = (cola || collideBlock(block, gsdir, -0.25f));
+    cold = (cold || collideBlock(block, gsdir, 0.25f));
   }
 }
 
@@ -53,6 +61,9 @@ void Gui::clearRender() {
 }
 
 void Gui::updateMatrices() {
+  gfdir = glm::vec3(fdir.x, 0, fdir.z);
+  gsdir = glm::vec3(sdir.x, 0, sdir.z);
+
   glm::mat4 translate = glm::mat4(1.0f);
   translate = glm::translate(translate, -eye);
   view_matrix = glm::mat4_cast(orientation) * translate;
@@ -97,7 +108,8 @@ void Gui::keyCallback(int key, int scancode, int action, int mods) {
   float move_speed = 0.25f;
   if (key == GLFW_KEY_Q) {
     glfwSetWindowShouldClose(window, GLFW_TRUE);
-  } else if (key == GLFW_KEY_F && (mods & GLFW_MOD_CONTROL) && action != GLFW_RELEASE) {
+  } else if (key == GLFW_KEY_F && (mods & GLFW_MOD_CONTROL) &&
+             action != GLFW_RELEASE) {
     std::cout << "flying mode toggle" << std::endl;
     flying = !flying;
   }
@@ -112,20 +124,18 @@ void Gui::keyCallback(int key, int scancode, int action, int mods) {
       eye += sdir * move_speed;
     }
   } else {
-    if (on_ground && key == GLFW_KEY_SPACE) {
+    if (!colw && key == GLFW_KEY_W) {
+      eye += gfdir * move_speed;
+    } else if (!cols && key == GLFW_KEY_S) {
+      eye -= gfdir * move_speed;
+    } else if (!cola && key == GLFW_KEY_A) {
+      eye -= gsdir * move_speed;
+    } else if (!cold && key == GLFW_KEY_D) {
+      eye += gsdir * move_speed;
+    } else if (on_ground && key == GLFW_KEY_SPACE) {
       fall_speed = -0.25;
-      eye = eye + glm::vec3(0.0f, - fall_speed, 0.0f);      
+      eye = eye + glm::vec3(0.0f, -fall_speed, 0.0f);
     }
-    if (! collide){
-    if (key == GLFW_KEY_W) {
-      eye += glm::vec3(fdir.x, 0, fdir.z) * move_speed;
-    } else if (key == GLFW_KEY_S) {
-      eye -= glm::vec3(fdir.x, 0, fdir.z) * move_speed;
-    } else if (key == GLFW_KEY_A) {
-      eye -= glm::vec3(sdir.x, 0, sdir.z) * move_speed;
-    } else if (key == GLFW_KEY_D) {
-      eye += glm::vec3(sdir.x, 0, sdir.z) * move_speed;
-    }}
   }
 }
 
