@@ -17,6 +17,10 @@ int main(int argc, char *argv[]) {
   // create window/init glfw
   Gui g(window_width, window_height, window_title);
 
+  // set input callbacks
+  glfwSetCursorPosCallback(g.window, g.MousePosCallback);
+  glfwSetMouseButtonCallback(g.window, g.MouseButtonCallback);
+
   // dirt cube shader/vao
   Shader dirt_cube_shader("src/shaders/cube_vert.glsl", "",
                           "src/shaders/cube_frag.glsl");

@@ -22,6 +22,11 @@ public:
   int window_width, window_height;
   GLFWwindow *window;
 
+  // camera properties
+  glm::vec3 eye = glm::vec3(0.0f, 2.0f, 2.0f);
+  glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+  glm::vec3 focus = glm::vec3(0.0f, 0.0f, 0.0f);
+
   // camera uniforms
   glm::mat4 view_matrix;
   glm::mat4 projection_matrix;
@@ -32,19 +37,6 @@ public:
     window_width = w;
     window_height = h;
     window_title = title;
-
-    // init camera uniforms
-    model_matrix = glm::mat4(1.0f);
-    // view_matrix = glm::lookAt(eye, center, up);
-    // projection_matrix = glm::perspective(
-    //     kFov, (float)window_width / window_height, kNear, kFar);
-    projection_matrix = glm::perspective(
-        glm::radians(100.f), ((float)window_width) / window_height, 0.1f, 100.f);
-    view_matrix = glm::lookAt(glm::vec3(0, 3, -3), glm::vec3(0, 0, 0),
-                              glm::vec3(0, 1, 0));
-
-    // std::cout << "mvp: " << glm::to_string(projection_matrix * view_matrix *
-    // model_matrix) << std::endl << std::endl;
 
     // init glfw
     glfwSetErrorCallback(error_callback);
@@ -85,18 +77,23 @@ public:
     // glDepthFunc(GL_LESS);
     // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // glCullFace(GL_BACK);
-    // updateMatrices();
+    updateMatrices();
   }
 
   void updateMatrices() {
-    projection_matrix = glm::perspective(
-        glm::radians(100.f),
-        ((float)window_width)/window_height,
-        0.1f,
-        100.f
-    );
-    view_matrix = glm::lookAt(glm::vec3(0,3,-3), glm::vec3(0,0,0), glm::vec3(0,1,0));
+    projection_matrix =
+        glm::perspective(glm::radians(100.f),
+                         ((float)window_width) / window_height, 0.1f, 100.f);
+    view_matrix = glm::lookAt(eye, focus, up);
+    model_matrix = glm::mat4(1.0f);
   }
+
+  void mouseButtonCallback(int button, int action, int mods);
+  void mousePosCallback(int mouse_x, int mouse_y);
+  static void MouseButtonCallback(GLFWwindow *window, int button, int action,
+                                  int mods);
+  static void MousePosCallback(GLFWwindow *window, double mouse_x,
+                               double mouse_y);
 };
 
 #endif
