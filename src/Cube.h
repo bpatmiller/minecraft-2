@@ -32,6 +32,10 @@ struct Cube {
                             indices.data(), offsets.size());
   }
 
+  float perlin(int x, int z) {
+    return 1.0f;
+  }
+
   void generateTerrain() {
     offsets.clear();
 
@@ -42,8 +46,8 @@ struct Cube {
 
     for (int x = minx; x < maxx; x++) {
       for (int z = minz; z < maxz; z++) {
-        int y = (int)(glm::sin((float)x) * glm::sin((float)z) * 1.5);
-        offsets.emplace_back(glm::vec3(x, y, z));
+        float pn = perlin(x, z);
+        offsets.emplace_back(glm::vec3(x, (int)pn, z));
       }
     }
   }

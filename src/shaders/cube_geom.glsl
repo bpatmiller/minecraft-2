@@ -7,6 +7,9 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
+in vec2[] uv;
+
+out float top;
 out vec3 normal;
 out vec3 world_position;
 
@@ -18,7 +21,9 @@ void main()
 	normal = normalize(cross(A, B));
 
 	for (int n = 0; n < gl_in.length(); n++) {
-        world_position = gl_in[n].gl_Position.xyz;
+        top = uv[n].y;
+		world_position = gl_in[n].gl_Position.xyz;
+
         gl_Position = projection * view * model * gl_in[n].gl_Position;
 
 		EmitVertex();

@@ -3,6 +3,7 @@ out vec4 fragment_color;
 
 uniform vec3 light_position;
 
+in float top;
 in vec3 normal;
 in vec3 world_position;
 
@@ -83,7 +84,7 @@ float cnoise(vec3 P){
 
 void main() {
     vec3 brown = vec3(0.4392, 0.2824, 0.2353) * 1.0;
-    if (normal == vec3(0.0,1.0,0.0)) {
+    if (top > 0.9) {
       brown = vec3(0.3, 0.7, 0.4);
     }
     float perl = 0.8 + 0.5 * cnoise(world_position);
