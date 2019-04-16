@@ -29,6 +29,7 @@ public:
   bool mouse_pressed = false;
   bool on_ground = false;
   bool flying = false;
+  bool collide = false;
   float fall_speed = 0.0f;
   glm::vec3 light_position = glm::vec3(-3.0f, 10.0f, 5.0f);
 

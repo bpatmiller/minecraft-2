@@ -14,7 +14,7 @@ void main() {
     }
 
     vec3 L = normalize(light_position - world_position);
-    float kd = 0.5 + 0.5 * dot(L, normal);
+    float kd = 0.75 + 0.25 * dot(L, normal);
 
     fragment_color = vec4(kd * col, 1.0);
 }

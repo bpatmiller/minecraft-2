@@ -16,18 +16,28 @@ void Gui::checkGround(std::vector<glm::vec3> &offsets) {
   if (flying)
     return;
 
+  on_ground = false;
+  collide = false;
   for (auto block : offsets) {
     // offset of a unit (0 - 1) cube
     bool x = (block[0] <= eye[0] && eye[0] <= block[0] + 1.0f);
-    bool y = (block[1] + 2.0f >= eye[1]);
+    bool y = (block[1] + 2.75f >= eye[1]);
     bool z = (block[2] <= eye[2] && eye[2] <= block[2] + 1.0f);
+    bool y_collide = (block[1] >= eye[1] - 1.75 && block[1] <= eye[1] - 0.75);
 
     if (x && y && z) {
       on_ground = true;
+    }
+    if (x && z && y_collide) {
+      glm::vec3 block_center(block[0]+0.5f, eye[1], block[2]+0.5f);
+      glm::vec3 push_vec = glm::normalize(eye - block_center);
+      eye += 0.15f * push_vec;
+      collide = true;
+    }
+    if (on_ground && collide) {
       return;
     }
   }
-  on_ground = false;
 }
 
 void Gui::clearRender() {
@@ -102,6 +112,11 @@ void Gui::keyCallback(int key, int scancode, int action, int mods) {
       eye += sdir * move_speed;
     }
   } else {
+    if (on_ground && key == GLFW_KEY_SPACE) {
+      fall_speed = -0.25;
+      eye = eye + glm::vec3(0.0f, - fall_speed, 0.0f);      
+    }
+    if (! collide){
     if (key == GLFW_KEY_W) {
       eye += glm::vec3(fdir.x, 0, fdir.z) * move_speed;
     } else if (key == GLFW_KEY_S) {
@@ -110,10 +125,7 @@ void Gui::keyCallback(int key, int scancode, int action, int mods) {
       eye -= glm::vec3(sdir.x, 0, sdir.z) * move_speed;
     } else if (key == GLFW_KEY_D) {
       eye += glm::vec3(sdir.x, 0, sdir.z) * move_speed;
-    } else if (on_ground && key == GLFW_KEY_SPACE) {
-      fall_speed = -0.25;
-      eye = eye + glm::vec3(0.0f, - fall_speed, 0.0f);      
-    }
+    }}
   }
 }
 
