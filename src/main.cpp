@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
   glfwSetCursorPosCallback(g.window, Gui::MousePosCallback);
   glfwSetMouseButtonCallback(g.window, Gui::MouseButtonCallback);
   glfwSetKeyCallback(g.window, Gui::KeyCallback);
+  // glfwSetInputMode(g.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   // dirt cube shader/vao
   Shader dirt_cube_shader("src/shaders/cube_vert.glsl",

@@ -1,4 +1,5 @@
 #include "Gui.h"
+
 #include "glm/gtx/rotate_vector.hpp"
 #include <glm/glm.hpp>
 
@@ -77,8 +78,10 @@ void Gui::mousePosCallback(double mouse_x, double mouse_y) {
 }
 
 void Gui::keyCallback(int key, int scancode, int action, int mods) {
-  float move_speed = 0.1f;
-  if (key == GLFW_KEY_W) {
+  float move_speed = 0.25f;
+  if (key == GLFW_KEY_Q) {
+    glfwSetWindowShouldClose(window, GLFW_TRUE);
+  } else if (key == GLFW_KEY_W) {
     eye += fdir * move_speed;
   } else if (key == GLFW_KEY_S) {
     eye -= fdir * move_speed;
