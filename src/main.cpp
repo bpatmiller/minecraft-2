@@ -16,6 +16,7 @@ std::string window_title = "minecraft";
 int main(int argc, char *argv[]) {
   // create window/init glfw
   Gui g(window_width, window_height, window_title);
+  glfwSetWindowUserPointer(g.window, &g);
 
   // set input callbacks
   glfwSetCursorPosCallback(g.window, Gui::MousePosCallback);
