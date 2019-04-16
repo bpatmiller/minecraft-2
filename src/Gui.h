@@ -3,12 +3,11 @@
 
 #include <glad/glad.h>
 
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include "VAO.h"
 #include <GLFW/glfw3.h>
 #include <cstdlib>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <string>
 
@@ -28,20 +27,19 @@ public:
   float aspect;
 
   float camera_distance = 5.0f;
-	glm::vec3 eye = glm::vec3(0.0f, 0.1f, camera_distance);
-	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::vec3 look = glm::vec3(0.0f, 0.0f, -1.0f);
-	glm::vec3 tangent = glm::cross(look, up);
-	glm::vec3 center = eye - camera_distance * look;
-	glm::mat3 orientation = glm::mat3(tangent, up, look);
-	glm::vec4 light_position;
+  glm::vec3 eye = glm::vec3(0.0f, 0.1f, camera_distance);
+  glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+  glm::vec3 look = glm::vec3(0.0f, 0.0f, -1.0f);
+  glm::vec3 tangent = glm::cross(look, up);
+  glm::vec3 center = eye - camera_distance * look;
+  glm::mat3 orientation = glm::mat3(tangent, up, look);
+  glm::vec4 light_position;
 
-	glm::mat4 view_matrix = glm::lookAt(eye, center, up);
-	glm::mat4 projection_matrix = glm::perspective((float)(kFov * (M_PI / 180.0f)), aspect, kNear, kFar);
+  glm::mat4 view_matrix = glm::lookAt(eye, center, up);
+  glm::mat4 projection_matrix =
+      glm::perspective((float)(kFov * (M_PI / 180.0f)), aspect, kNear, kFar);
 
-	glm::mat4 model_matrix = glm::mat4(1.0f);
-
-
+  glm::mat4 model_matrix = glm::mat4(1.0f);
 
   Gui(int w, int h, std::string title) {
     aspect = static_cast<float>(w) / h;
