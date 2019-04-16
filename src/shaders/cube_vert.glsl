@@ -6,6 +6,10 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
+out vec3 vert_color;
+
 void main() {
-	gl_Position = model * vec4(vertex_position + offset_position, 1.0);
+	vert_color = (vec3(1.0,1.0,1.0) + vertex_position) / 2.0;
+	gl_Position = projection * view * model * vec4(vertex_position + offset_position, 1.0);
+
 }
