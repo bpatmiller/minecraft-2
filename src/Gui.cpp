@@ -5,10 +5,13 @@
 
 void Gui::gravity() {
   if (!on_ground && !flying) {
-    eye = eye + glm::vec3(0.0f, -fall_speed, 0.0f);
-    fall_speed += 0.01;
+    eye = eye + momentum;
+    momentum.y -= 0.015;
+    momentum.x *= 0.95;
+    momentum.z *= 0.95;
+
   } else {
-    fall_speed = 0.025;
+    momentum = glm::vec3(0.0);
   }
 }
 
@@ -133,9 +136,13 @@ void Gui::keyCallback(int key, int scancode, int action, int mods) {
     } else if (!cold && key == GLFW_KEY_D) {
       eye += gsdir * move_speed;
     } else if (on_ground && key == GLFW_KEY_SPACE) {
-      fall_speed = -0.25;
-      eye = eye + glm::vec3(0.0f, -fall_speed, 0.0f);
+      momentum.y = 0.25;
+      eye = eye + glm::vec3(0.0f, momentum.y, 0.0f);
     }
+  }
+  if (mods & GLFW_MOD_SHIFT) {
+    momentum += fdir;
+    eye += momentum;
   }
 }
 
