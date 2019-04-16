@@ -30,8 +30,10 @@ public:
   int current_y = 0;
   bool mouse_pressed = false;
 
+  bool on_ground = false;
+
   // camera properties
-  glm::vec3 eye = glm::vec3(0.0f, 2.0f, 2.0f);
+  glm::vec3 eye = glm::vec3(0.0f, 3.0f, 3.0f);
   glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
   glm::vec3 focus = glm::vec3(0.0f, 0.0f, 0.0f);
   // secondary camera properties
@@ -74,6 +76,8 @@ public:
   void swapPoll();
   void clearRender();
   void updateMatrices();
+  void checkGround(std::vector<glm::vec3>& offsets);
+  void gravity();
 
   void mouseButtonCallback(int button, int action, int mods);
   void mousePosCallback(double mouse_x, double mouse_y);

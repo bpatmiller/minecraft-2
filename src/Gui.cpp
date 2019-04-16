@@ -3,6 +3,28 @@
 #include "glm/gtx/rotate_vector.hpp"
 #include <glm/glm.hpp>
 
+void Gui::gravity() {
+  if (! on_ground) {
+    eye = eye + glm::vec3(0.0f,-0.05f,0.0f);
+    focus = focus + glm::vec3(0.0,-0.05f,0.0f);
+  }
+}
+
+void Gui::checkGround(std::vector<glm::vec3>& offsets) {
+  for (auto block : offsets) {
+    // offset of a unit (0 - 1) cube
+    bool x = (block[0] <= eye[0] && eye[0] <= block[0] + 1.0f);
+    bool y = (block[1] + 2.0f >= eye[1]);
+    bool z = (block[2] <= eye[2] && eye[2] <= block[2] + 1.0f);
+
+    if (x && y && z) {
+      on_ground = true;
+      return;
+    }
+  }
+  on_ground = false;
+}
+
 void Gui::clearRender() {
   glfwGetFramebufferSize(window, &window_width, &window_height);
   glViewport(0, 0, window_width, window_height);

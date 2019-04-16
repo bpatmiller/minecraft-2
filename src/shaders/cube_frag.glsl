@@ -82,11 +82,14 @@ float cnoise(vec3 P){
 }
 
 void main() {
-    vec3 brown = vec3(0.4392, 0.2824, 0.2353);
-    float perl = 0.5 + 0.5 * cnoise(world_position);
+    vec3 brown = vec3(0.4392, 0.2824, 0.2353) * 1.0;
+    if (normal == vec3(0.0,1.0,0.0)) {
+      brown = vec3(0.3, 0.7, 0.4);
+    }
+    float perl = 0.8 + 0.5 * cnoise(world_position);
 
     vec3 L = normalize(light_position - world_position);
-    float kd = dot(L, normal);
+    float kd = 0.75 + 0.25 * dot(L, normal);
 
     fragment_color = vec4(kd * perl * brown, 1.0);
 }
