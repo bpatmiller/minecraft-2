@@ -33,8 +33,8 @@ int main(int argc, char *argv[]) {
   // draw loop
   while (!glfwWindowShouldClose(g.window)) {
     g.clearRender();
-    // g.checkGround(dirt_cube.offsets);
-    // g.gravity();
+    g.checkGround(dirt_cube.offsets);
+    g.gravity();
 
     // dirt draw pass
     dirt_cube_shader.use();

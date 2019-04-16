@@ -4,12 +4,18 @@
 #include <glm/glm.hpp>
 
 void Gui::gravity() {
-  if (!on_ground) {
-    eye = eye + glm::vec3(0.0f, -0.05f, 0.0f);
+  if (!on_ground && !flying) {
+    eye = eye + glm::vec3(0.0f, - fall_speed, 0.0f);
+    fall_speed += 0.01;
+  } else {
+    fall_speed = 0.025;
   }
 }
 
 void Gui::checkGround(std::vector<glm::vec3> &offsets) {
+  if (flying)
+    return;
+
   for (auto block : offsets) {
     // offset of a unit (0 - 1) cube
     bool x = (block[0] <= eye[0] && eye[0] <= block[0] + 1.0f);
@@ -64,8 +70,8 @@ void Gui::mousePosCallback(double mouse_x, double mouse_y) {
   if (first)
     return;
 
-  dx *= 0.25;
-  dy *= 0.25;
+  dx *= 0.5;
+  dy *= 0.5;
 
   glm::quat qyaw = glm::angleAxis(glm::radians(dy), glm::vec3(1, 0, 0));
   glm::quat qpitch = glm::angleAxis(glm::radians(dx), glm::vec3(0, 1, 0));
@@ -81,14 +87,33 @@ void Gui::keyCallback(int key, int scancode, int action, int mods) {
   float move_speed = 0.25f;
   if (key == GLFW_KEY_Q) {
     glfwSetWindowShouldClose(window, GLFW_TRUE);
-  } else if (key == GLFW_KEY_W) {
-    eye += fdir * move_speed;
-  } else if (key == GLFW_KEY_S) {
-    eye -= fdir * move_speed;
-  } else if (key == GLFW_KEY_A) {
-    eye -= sdir * move_speed;
-  } else if (key == GLFW_KEY_D) {
-    eye += sdir * move_speed;
+  } else if (key == GLFW_KEY_F && (mods & GLFW_MOD_CONTROL) && action != GLFW_RELEASE) {
+    std::cout << "flying mode toggle" << std::endl;
+    flying = !flying;
+  }
+  if (flying) {
+    if (key == GLFW_KEY_W) {
+      eye += fdir * move_speed;
+    } else if (key == GLFW_KEY_S) {
+      eye -= fdir * move_speed;
+    } else if (key == GLFW_KEY_A) {
+      eye -= sdir * move_speed;
+    } else if (key == GLFW_KEY_D) {
+      eye += sdir * move_speed;
+    }
+  } else {
+    if (key == GLFW_KEY_W) {
+      eye += glm::vec3(fdir.x, 0, fdir.z) * move_speed;
+    } else if (key == GLFW_KEY_S) {
+      eye -= glm::vec3(fdir.x, 0, fdir.z) * move_speed;
+    } else if (key == GLFW_KEY_A) {
+      eye -= glm::vec3(sdir.x, 0, sdir.z) * move_speed;
+    } else if (key == GLFW_KEY_D) {
+      eye += glm::vec3(sdir.x, 0, sdir.z) * move_speed;
+    } else if (on_ground && key == GLFW_KEY_SPACE) {
+      fall_speed = -0.25;
+      eye = eye + glm::vec3(0.0f, - fall_speed, 0.0f);      
+    }
   }
 }
 
@@ -101,6 +126,7 @@ void Gui::MouseButtonCallback(GLFWwindow *window, int button, int action,
 void Gui::MousePosCallback(GLFWwindow *window, double mouse_x, double mouse_y) {
   Gui *gui = (Gui *)glfwGetWindowUserPointer(window);
   gui->mousePosCallback(mouse_x, mouse_y);
+  // glfwSetCursorPos(gui->window, gui->window_width/2, 0);
 }
 
 void Gui::KeyCallback(GLFWwindow *window, int key, int scancode, int action,
