@@ -56,18 +56,17 @@ struct VertexArr {
     size_t offset = 0;
     for (int size : sizes) {
       glEnableVertexAttribArray(attCt);
-      glVertexAttribPointer(attCt, size, GL_FLOAT, GL_FALSE, stride * sizeof(float),
-      (void*)offset);
+      glVertexAttribPointer(attCt, size, GL_FLOAT, GL_FALSE,
+                            stride * sizeof(float), (void *)offset);
       if (instanced) {
         glVertexAttribDivisor(attCt, 1);
       }
       attCt++;
       offset += size * sizeof(float);
     }
-    
+
     VertexBuf::unbind();
     unbind();
-
   }
 };
 
