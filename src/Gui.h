@@ -28,7 +28,7 @@ public:
   int current_y = -1;
   bool mouse_pressed = false;
   bool on_ground = false;
-  bool flying = true;
+  bool flying = false;
   bool colw = false;
   bool cols = false;
   bool cola = false;
