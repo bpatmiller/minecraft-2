@@ -7,7 +7,7 @@
 struct Skybox {
   VertexArr VAO;
   glm::mat4 model_matrix = glm::mat4(1.0f);
-  float scale = 125.0f;
+  float scale = 200.0f;
 
   std::vector<glm::vec3> vertices = {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f},
                                      {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 1.0f},
@@ -29,5 +29,11 @@ struct Skybox {
     VAO.bind();
     glDrawElements(GL_TRIANGLES, indices.size() * 3, GL_UNSIGNED_INT,
                    indices.data());
+  }
+
+  void updateLocation(glm::vec3 &eye) {
+    model_matrix = glm::translate(eye) *
+                   glm::scale(glm::vec3(scale, scale, scale)) *
+                   glm::translate(glm::vec3(-0.5f, -0.5f, -0.5f));
   }
 };

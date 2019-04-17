@@ -58,17 +58,18 @@ void Gui::clearRender() {
   glfwGetFramebufferSize(window, &window_width, &window_height);
   glViewport(0, 0, window_width, window_height);
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
+  // glEnable(GL_CULL_FACE);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glDepthFunc(GL_LESS);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glCullFace(GL_BACK);
-  updateMatrices();
+  // glCullFace(GL_BACK);
 }
 
 void Gui::updateMatrices() {
+  screenRes = glm::vec3(window_width, window_height, 0.0f);
+
   gfdir = glm::vec3(fdir.x, 0, fdir.z);
   gsdir = glm::vec3(sdir.x, 0, sdir.z);
 
@@ -177,6 +178,9 @@ void Gui::MouseButtonCallback(GLFWwindow *window, int button, int action,
 void Gui::MousePosCallback(GLFWwindow *window, double mouse_x, double mouse_y) {
   Gui *gui = (Gui *)glfwGetWindowUserPointer(window);
   gui->mousePosCallback(mouse_x, mouse_y);
+  // glfwSetCursorPos(window, gui->window_width/ 2, gui->window_height / 2);
+  // gui->current_x = gui->window_width/ 2;
+  // gui->current_y = gui->window_height / 2;
 }
 
 void Gui::KeyCallback(GLFWwindow *window, int key, int scancode, int action,

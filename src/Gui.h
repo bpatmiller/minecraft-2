@@ -24,6 +24,7 @@ public:
   std::string window_title;
   int window_width;
   int window_height;
+  glm::vec3 screenRes;
 
   std::map<int, bool> keyHeld;
 
@@ -74,8 +75,7 @@ public:
     glfwSetCursorPosCallback(window, MousePosCallback);
     glfwSetMouseButtonCallback(window, MouseButtonCallback);
     glfwSetKeyCallback(window, KeyCallback);
-    // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
     updateMatrices();
   }

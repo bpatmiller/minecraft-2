@@ -1,3 +1,4 @@
+#include "Config.h"
 #include "VAO.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -49,6 +50,40 @@ struct Cube {
     VAO.bind();
     glDrawElementsInstanced(GL_TRIANGLES, indices.size() * 3, GL_UNSIGNED_INT,
                             indices.data(), offsets.size());
+  }
+
+  void generateTerrain() {
+    offsets.clear();
+
+    int minx = -BlockSize;
+    int maxx = BlockSize;
+    int minz = -BlockSize;
+    ;
+    int maxz = BlockSize;
+
+    // generate dirt
+    for (int x = minx; x < maxx; x++) {
+      for (int z = minz; z < maxz; z++) {
+        float pn = perlin2d(x, z);
+        if (pn < RockLevel) {
+          // rock
+          offsets.emplace_back(glm::vec4(x, (int)pn, z, 3.0f));
+        } else {
+          bool tree = ((rand() % 100) == 1);
+          // add cactus
+          if (tree && pn >= WaterLevel) {
+            offsets.emplace_back(glm::vec4(x, (int)pn, z, 0.0f));
+            int h = (rand() % 6) + 4;
+            for (int b = 0; b < h; b++) {
+              offsets.emplace_back(glm::vec4(x, (int)pn + b, z, 2.0f));
+            }
+          } else {
+            // dirt
+            offsets.emplace_back(glm::vec4(x, (int)pn, z, 0.0f));
+          }
+        }
+      }
+    }
   }
 
   float fade(float t) { return t * t * t * (t * (t * 6 - 15) + 10); }
@@ -105,44 +140,5 @@ struct Cube {
     float r = perlin3d(x, 1.0f, z);
     r *= 20.0f;
     return r;
-  }
-
-  void generateTerrain() {
-    offsets.clear();
-
-    int minx = -50;
-    int maxx = 50;
-    int minz = -50;
-    int maxz = 50;
-    int sea_level = -4;
-    int rock_level = -2;
-
-    // generate dirt
-    for (int x = minx; x < maxx; x++) {
-      for (int z = minz; z < maxz; z++) {
-        float pn = perlin2d(x, z);
-        if (pn < rock_level) {
-          // rock
-          offsets.emplace_back(glm::vec4(x, (int)pn, z, 3.0f));
-          // conditionally add water
-          if (pn < sea_level) {
-            offsets.emplace_back(glm::vec4(x, sea_level, z, 1.0f));
-          }
-        } else {
-        bool tree = ((rand() % 100) == 1);
-        // add cactus
-        if (tree && pn >= sea_level) {
-          offsets.emplace_back(glm::vec4(x, (int)pn, z, 0.0f));
-          int h = (rand() % 6) + 4;
-          for (int b = 0; b < h; b++) {
-            offsets.emplace_back(glm::vec4(x, (int)pn + b, z, 2.0f));
-          }
-        } else {
-          // dirt
-          offsets.emplace_back(glm::vec4(x, (int)pn, z, 0.0f));
-        }
-      }
-      }
-    }
   }
 };
