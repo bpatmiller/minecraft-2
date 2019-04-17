@@ -15,14 +15,14 @@ void Gui::gravity() {
   }
 }
 
-bool Gui::groundBlock(glm::vec3 &block) {
+bool Gui::groundBlock(glm::vec4 &block) {
   bool x = (block[0] <= eye[0] && eye[0] <= block[0] + 1.0f);
   bool y = (block[1] + 2.75f >= eye[1]);
   bool z = (block[2] <= eye[2] && eye[2] <= block[2] + 1.0f);
   return (x && y && z);
 }
 
-bool Gui::collideBlock(glm::vec3 &block, glm::vec3 &offset, float move_speed) {
+bool Gui::collideBlock(glm::vec4 &block, glm::vec3 &offset, float move_speed) {
   glm::vec3 new_eye = eye + (offset * move_speed);
 
   bool x = (block[0] <= new_eye[0] && new_eye[0] <= block[0] + 1.0f);
@@ -31,7 +31,7 @@ bool Gui::collideBlock(glm::vec3 &block, glm::vec3 &offset, float move_speed) {
   return (x && y && z);
 }
 
-void Gui::checkGround(std::vector<glm::vec3> &offsets) {
+void Gui::checkGround(std::vector<glm::vec4> &offsets) {
   if (flying)
     return;
 
@@ -41,6 +41,9 @@ void Gui::checkGround(std::vector<glm::vec3> &offsets) {
   cola = false;
   cold = false;
   for (auto block : offsets) {
+    if (block[3] != 0.0) {
+      continue;
+    }
     if (groundBlock(block))
       on_ground = true;
 
@@ -57,6 +60,8 @@ void Gui::clearRender() {
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glDepthFunc(GL_LESS);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glCullFace(GL_BACK);

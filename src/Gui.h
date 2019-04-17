@@ -28,7 +28,7 @@ public:
   int current_y = -1;
   bool mouse_pressed = false;
   bool on_ground = false;
-  bool flying = false;
+  bool flying = true;
   bool colw = false;
   bool cols = false;
   bool cola = false;
@@ -75,13 +75,13 @@ public:
     glfwTerminate();
   }
 
-  bool groundBlock(glm::vec3 &block);
-  bool collideBlock(glm::vec3 &block, glm::vec3 &offset, float move_speed);
+  bool groundBlock(glm::vec4 &block);
+  bool collideBlock(glm::vec4 &block, glm::vec3 &offset, float move_speed);
 
   void swapPoll();
   void clearRender();
   void updateMatrices();
-  void checkGround(std::vector<glm::vec3> &offsets);
+  void checkGround(std::vector<glm::vec4> &offsets);
   void gravity();
 
   void mouseButtonCallback(int button, int action, int mods);

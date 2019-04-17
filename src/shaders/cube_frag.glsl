@@ -6,6 +6,7 @@ uniform vec3 light_position;
 in float top;
 in vec3 normal;
 in vec3 world_position;
+in float bt;
 
 float fade(float t) { return t * t * t * (t * (t * 6 - 15) + 10); }
 float lerp(float t, float a, float b) { return a + t * (b - a); }
@@ -54,7 +55,9 @@ float perlin3d(float x, float y, float z) {
 }
 
 void main() {
-  float perl_mod = 0.5;
+  // dirt
+  if (bt <= 1.0) {
+    float perl_mod = 0.5;
     vec3 col = vec3(0.4392, 0.2824, 0.2353) * 1.0;
     if (top > 0.9) {
       col = vec3(0.3, 0.7, 0.4);
@@ -67,4 +70,10 @@ void main() {
     perl = abs(perl);
 
     fragment_color = vec4(perl * kd * col, 1.0);
+  }
+  // water
+   else {
+    fragment_color = vec4(0.1,0.3,0.7,0.5);
+  }
+
 }

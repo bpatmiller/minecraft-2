@@ -18,9 +18,16 @@ struct VertexBuf {
 
   static void unbind() { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 
-  void bindVertices(const std::vector<glm::vec3> vertices) {
+  void bindVertices(const std::vector<glm::vec3>& vertices) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3),
+                 vertices.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+  }
+
+  void bindVertices(const std::vector<glm::vec4>& vertices) {
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec4),
                  vertices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
   }

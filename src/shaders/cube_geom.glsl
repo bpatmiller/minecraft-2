@@ -8,10 +8,12 @@ uniform mat4 view;
 uniform mat4 model;
 
 in vec2[] uv;
+in float[] block_type;
 
 out float top;
 out vec3 normal;
 out vec3 world_position;
+out float bt;
 
 void main()
 {
@@ -21,7 +23,8 @@ void main()
 	normal = normalize(cross(A, B));
 
 	for (int n = 0; n < gl_in.length(); n++) {
-        top = uv[n].y;
+        bt = block_type[n];
+		top = uv[n].y;
 		world_position = gl_in[n].gl_Position.xyz;
 
         gl_Position = projection * view * model * gl_in[n].gl_Position;

@@ -35,14 +35,15 @@ struct Cube {
       {0, 2, 1}, {1, 2, 3}, {4, 5, 6}, {5, 7, 6}, {0, 1, 5}, {0, 5, 4},
       {2, 7, 3}, {2, 6, 7}, {3, 5, 1}, {3, 7, 5}, {0, 6, 2}, {0, 4, 6}};
 
-  std::vector<glm::vec3> offsets = {{0.0f, 0.0f, 0.0f}};
+  std::vector<glm::vec4> offsets = {{0.0f, 0.0f, 0.0f, 0.0f}};
+
 
   Cube() {
     generateTerrain();
     VAO.vb.bindVertices(vertices);
     VAO.ib.bindVertices(offsets);
     VAO.setLayout({3}, false);
-    VAO.setLayout({3}, true);
+    VAO.setLayout({4}, true);
   }
 
   void draw() {
@@ -110,15 +111,22 @@ struct Cube {
   void generateTerrain() {
     offsets.clear();
 
-    int minx = -100;
-    int maxx = 100;
-    int minz = -100;
-    int maxz = 100;
+    int minx = -50;
+    int maxx = 50;
+    int minz = -50;
+    int maxz = 50;
+    int sea_level = -3;
 
+
+    // generate dirt
     for (int x = minx; x < maxx; x++) {
       for (int z = minz; z < maxz; z++) {
         float pn = perlin2d(x, z);
-        offsets.emplace_back(glm::vec3(x, (int)pn, z));
+        offsets.emplace_back(glm::vec4(x, (int)pn, z, 0.0f));
+        // conditionally add water
+        if (pn < sea_level) {
+          offsets.emplace_back(glm::vec4(x, sea_level, z, 2.0f));
+        }
       }
     }
   }
