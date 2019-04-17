@@ -1,6 +1,7 @@
 #version 330 core
 out vec4 fragment_color;
 uniform sampler2D screenTex;
+uniform sampler2D depTex;
 uniform vec3 screenRes;
 
 in vec2 uv;

@@ -79,9 +79,13 @@ int main(int argc, char *argv[]) {
     skybox.draw();
     waterTex.unbind();
 
-    // draw scene quad ------------------------- //
     waterTex.bindTexture();
+
+    // draw scene quad ------------------------- //
     texquad_shader.use();
+    // sampler uniforms
+    texquad_shader.setInt("screenTex", 0);
+    texquad_shader.setInt("depTex", 1);
     texQuad.draw();
 
     // water pass ------------------------- //
@@ -91,6 +95,9 @@ int main(int argc, char *argv[]) {
     water_shader.setMat("view", g.view_matrix);
     water_shader.setMat("model", g.model_matrix);
     water_shader.setVec3("screenRes", g.screenRes);
+    // sampler uniforms
+    water_shader.setInt("screenTex", 0);
+    water_shader.setInt("depTex", 1);
     // render
     water.draw();
 
