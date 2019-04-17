@@ -37,7 +37,11 @@ struct Water {
     offsets.clear();
     for (auto block : block_offsets) {
       if (block.y < WaterLevel) {
-        offsets.emplace_back(glm::vec3(block.x, WaterLevel, block.z));
+        int y = block.y + 1;
+        while (y < WaterLevel) {
+          offsets.emplace_back(glm::vec3(block.x, y, block.z));
+          y++;
+        }
       }
     }
   }

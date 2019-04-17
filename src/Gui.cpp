@@ -77,7 +77,7 @@ void Gui::updateMatrices() {
   translate = glm::translate(translate, -eye);
   view_matrix = glm::mat4_cast(orientation) * translate;
   projection_matrix = glm::perspective(
-      glm::radians(100.f), ((float)window_width) / window_height, 0.1f, 200.f);
+      glm::radians(90.f), ((float)window_width) / window_height, 0.1f, 200.f);
   model_matrix = glm::mat4(1.0f);
 }
 
