@@ -103,7 +103,7 @@ struct Cube {
     x /= 25.0f;
     z /= 25.0f;
     float r = perlin3d(x, 1.0f, z);
-    r *= 15.0f;
+    r *= 20.0f;
     return r;
   }
 
@@ -114,17 +114,34 @@ struct Cube {
     int maxx = 50;
     int minz = -50;
     int maxz = 50;
-    int sea_level = -3;
+    int sea_level = -4;
+    int rock_level = -2;
 
     // generate dirt
     for (int x = minx; x < maxx; x++) {
       for (int z = minz; z < maxz; z++) {
         float pn = perlin2d(x, z);
-        offsets.emplace_back(glm::vec4(x, (int)pn, z, 0.0f));
-        // conditionally add water
-        if (pn < sea_level) {
-          offsets.emplace_back(glm::vec4(x, sea_level, z, 2.0f));
+        if (pn < rock_level) {
+          // rock
+          offsets.emplace_back(glm::vec4(x, (int)pn, z, 3.0f));
+          // conditionally add water
+          if (pn < sea_level) {
+            offsets.emplace_back(glm::vec4(x, sea_level, z, 1.0f));
+          }
+        } else {
+        bool tree = ((rand() % 100) == 1);
+        // add cactus
+        if (tree && pn >= sea_level) {
+          offsets.emplace_back(glm::vec4(x, (int)pn, z, 0.0f));
+          int h = (rand() % 6) + 4;
+          for (int b = 0; b < h; b++) {
+            offsets.emplace_back(glm::vec4(x, (int)pn + b, z, 2.0f));
+          }
+        } else {
+          // dirt
+          offsets.emplace_back(glm::vec4(x, (int)pn, z, 0.0f));
         }
+      }
       }
     }
   }

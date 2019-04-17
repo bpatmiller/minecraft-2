@@ -41,7 +41,7 @@ void Gui::checkGround(std::vector<glm::vec4> &offsets) {
   cola = false;
   cold = false;
   for (auto block : offsets) {
-    if (block[3] != 0.0) {
+    if (block[3] == 1.0) {
       continue;
     }
     if (groundBlock(block))

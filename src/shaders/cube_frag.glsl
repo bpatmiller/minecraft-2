@@ -56,7 +56,7 @@ float perlin3d(float x, float y, float z) {
 
 void main() {
   // dirt
-  if (bt <= 1.0) {
+  if (bt == 0.0) {
     float perl_mod = 0.5;
     vec3 col = vec3(0.4392, 0.2824, 0.2353) * 1.0;
     if (top > 0.9) {
@@ -72,8 +72,27 @@ void main() {
     fragment_color = vec4(perl * kd * col, 1.0);
   }
   // water
-   else {
+   else if (bt == 1.0) {
     fragment_color = vec4(0.1,0.3,0.7,0.5);
+  // cactus
+  } else if (bt == 2.0){
+    vec3 L = normalize(light_position - world_position);
+    float kd = 0.75 + 0.25 * dot(L, normal);
+
+    float perl = 0.8 + 0.2 * perlin3d(world_position.z, world_position.x, world_position.x);
+
+    vec3 col = vec3(0.1, 0.35, 0.15);
+    fragment_color = vec4(kd * perl * col,1.0);
+  } 
+  // stone
+  else {
+    vec3 L = normalize(light_position - world_position);
+    float kd = 0.75 + 0.25 * dot(L, normal);
+
+    float perl = 0.8 + 0.2 * perlin3d(world_position.z, world_position.x, world_position.y);
+
+    vec3 col = vec3(0.63, 0.6, 0.35);
+    fragment_color = vec4(kd * perl * col,1.0);
   }
 
 }
