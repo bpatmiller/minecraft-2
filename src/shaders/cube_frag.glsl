@@ -61,12 +61,12 @@ void main() {
     vec3 col = vec3(0.4392, 0.2824, 0.2353) * 1.0;
     if (top > 0.9) {
       col = vec3(0.3, 0.7, 0.4);
-      perl_mod = 0.3;
+      perl_mod = 0.2;
     }
 
     vec3 L = normalize(light_position - world_position);
     float kd = 0.75 + 0.25 * dot(L, normal);
-    float perl = (1.0 - perl_mod) + perl_mod * perlin3d(world_position.x, world_position.y, world_position.z);
+    float perl = (1.0 - perl_mod) + perl_mod * abs(perlin3d(world_position.x, world_position.y, world_position.z));
     perl = abs(perl);
 
     fragment_color = vec4(perl * kd * col, 1.0);
