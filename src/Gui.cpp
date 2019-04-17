@@ -177,7 +177,6 @@ void Gui::MouseButtonCallback(GLFWwindow *window, int button, int action,
 void Gui::MousePosCallback(GLFWwindow *window, double mouse_x, double mouse_y) {
   Gui *gui = (Gui *)glfwGetWindowUserPointer(window);
   gui->mousePosCallback(mouse_x, mouse_y);
-  // glfwSetCursorPos(gui->window, gui->window_width/2, 0);
 }
 
 void Gui::KeyCallback(GLFWwindow *window, int key, int scancode, int action,

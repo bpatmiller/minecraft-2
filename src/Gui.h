@@ -59,8 +59,8 @@ public:
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
       exit(EXIT_FAILURE);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     window = glfwCreateWindow(window_width, window_height, window_title.c_str(),
                               NULL, NULL);
     if (!window) {
@@ -70,6 +70,13 @@ public:
     glfwMakeContextCurrent(window);
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     glfwSwapInterval(1);
+    // set input callbacks
+    glfwSetCursorPosCallback(window, MousePosCallback);
+    glfwSetMouseButtonCallback(window, MouseButtonCallback);
+    glfwSetKeyCallback(window, KeyCallback);
+    // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+
     updateMatrices();
   }
 
