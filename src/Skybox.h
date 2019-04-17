@@ -21,7 +21,8 @@ struct Skybox {
   Skybox() {
     VAO.vb.bindVertices(vertices);
     VAO.setLayout({3}, false);
-    model_matrix = glm::scale(glm::vec3(scale, scale, scale)) * glm::translate(glm::vec3(-0.5f, -0.5f, -0.5f));
+    model_matrix = glm::scale(glm::vec3(scale, scale, scale)) *
+                   glm::translate(glm::vec3(-0.5f, -0.5f, -0.5f));
   }
 
   void draw() {

@@ -10,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
+#include <map>
 #include <string>
 
 static void error_callback(int error, const char *description) {
@@ -23,6 +24,8 @@ public:
   std::string window_title;
   int window_width;
   int window_height;
+
+  std::map<int, bool> keyHeld;
 
   int current_x = -1;
   int current_y = -1;
@@ -83,6 +86,7 @@ public:
   void updateMatrices();
   void checkGround(std::vector<glm::vec4> &offsets);
   void gravity();
+  void applyKeyboardInput();
 
   void mouseButtonCallback(int button, int action, int mods);
   void mousePosCallback(double mouse_x, double mouse_y);

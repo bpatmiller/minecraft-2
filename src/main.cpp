@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
     g.clearRender();
     g.checkGround(dirt_cube.offsets);
     g.gravity();
+    g.applyKeyboardInput();
 
     // cube pass
     dirt_cube_shader.use();

@@ -113,7 +113,6 @@ void Gui::mousePosCallback(double mouse_x, double mouse_y) {
 }
 
 void Gui::keyCallback(int key, int scancode, int action, int mods) {
-  float move_speed = 0.25f;
   if (key == GLFW_KEY_Q) {
     glfwSetWindowShouldClose(window, GLFW_TRUE);
   } else if (key == GLFW_KEY_F && (mods & GLFW_MOD_CONTROL) &&
@@ -121,33 +120,51 @@ void Gui::keyCallback(int key, int scancode, int action, int mods) {
     std::cout << "flying mode toggle" << std::endl;
     flying = !flying;
   }
-  if (flying) {
-    if (key == GLFW_KEY_W) {
-      eye += fdir * move_speed;
-    } else if (key == GLFW_KEY_S) {
-      eye -= fdir * move_speed;
-    } else if (key == GLFW_KEY_A) {
-      eye -= sdir * move_speed;
-    } else if (key == GLFW_KEY_D) {
-      eye += sdir * move_speed;
-    }
-  } else {
-    if (!colw && key == GLFW_KEY_W) {
-      eye += gfdir * move_speed;
-    } else if (!cols && key == GLFW_KEY_S) {
-      eye -= gfdir * move_speed;
-    } else if (!cola && key == GLFW_KEY_A) {
-      eye -= gsdir * move_speed;
-    } else if (!cold && key == GLFW_KEY_D) {
-      eye += gsdir * move_speed;
-    } else if (on_ground && key == GLFW_KEY_SPACE) {
-      momentum.y = 0.25;
-      eye = eye + glm::vec3(0.0f, momentum.y, 0.0f);
-    }
-  }
   if (mods & GLFW_MOD_SHIFT) {
     momentum += fdir;
     eye += momentum;
+  }
+
+  if (action == GLFW_PRESS) {
+    keyHeld[key] = true;
+  } else if (action == GLFW_RELEASE) {
+    keyHeld[key] = false;
+  }
+}
+
+void Gui::applyKeyboardInput() {
+  float move_speed = 0.25f;
+
+  if (flying) {
+    if (keyHeld[GLFW_KEY_W]) {
+      eye += fdir * move_speed;
+    }
+    if (keyHeld[GLFW_KEY_S]) {
+      eye -= fdir * move_speed;
+    }
+    if (keyHeld[GLFW_KEY_A]) {
+      eye -= sdir * move_speed;
+    }
+    if (keyHeld[GLFW_KEY_D]) {
+      eye += sdir * move_speed;
+    }
+  } else {
+    if (!colw && keyHeld[GLFW_KEY_W]) {
+      eye += gfdir * move_speed;
+    }
+    if (!cols && keyHeld[GLFW_KEY_S]) {
+      eye -= gfdir * move_speed;
+    }
+    if (!cola && keyHeld[GLFW_KEY_A]) {
+      eye -= gsdir * move_speed;
+    }
+    if (!cold && keyHeld[GLFW_KEY_D]) {
+      eye += gsdir * move_speed;
+    }
+    if (on_ground && keyHeld[GLFW_KEY_SPACE]) {
+      momentum.y = 0.25;
+      eye = eye + glm::vec3(0.0f, momentum.y, 0.0f);
+    }
   }
 }
 
