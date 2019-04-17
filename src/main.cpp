@@ -3,6 +3,7 @@
 #include "Cube.h"
 #include "Gui.h"
 #include "Shader.h"
+#include "Skybox.h"
 #include "VAO.h"
 #include <GLFW/glfw3.h>
 #include <cstdlib>
@@ -30,13 +31,18 @@ int main(int argc, char *argv[]) {
                           "src/shaders/cube_frag.glsl");
   Cube dirt_cube;
 
+  // skubox shader/vao
+  Shader skybox_shader("src/shaders/skybox_vert.glsl", "",
+                       "src/shaders/skybox_frag.glsl");
+  Skybox skybox;
+
   // draw loop
   while (!glfwWindowShouldClose(g.window)) {
     g.clearRender();
     g.checkGround(dirt_cube.offsets);
     g.gravity();
 
-    // dirt draw pass
+    // cube pass
     dirt_cube_shader.use();
     // pass uniforms
     dirt_cube_shader.setMat("projection", g.projection_matrix);
@@ -45,6 +51,15 @@ int main(int argc, char *argv[]) {
     dirt_cube_shader.setVec3("light_position", g.light_position);
     // render
     dirt_cube.draw();
+
+    // skybox pass
+    skybox_shader.use();
+    // pass uniforms
+    skybox_shader.setMat("projection", g.projection_matrix);
+    skybox_shader.setMat("view", g.view_matrix);
+    skybox_shader.setMat("model", skybox.model_matrix);
+    // render
+    skybox.draw();
 
     g.swapPoll();
   }

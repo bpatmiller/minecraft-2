@@ -37,7 +37,6 @@ struct Cube {
 
   std::vector<glm::vec4> offsets = {{0.0f, 0.0f, 0.0f, 0.0f}};
 
-
   Cube() {
     generateTerrain();
     VAO.vb.bindVertices(vertices);
@@ -116,7 +115,6 @@ struct Cube {
     int minz = -50;
     int maxz = 50;
     int sea_level = -3;
-
 
     // generate dirt
     for (int x = minx; x < maxx; x++) {
