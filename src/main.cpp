@@ -51,7 +51,9 @@ int main(int argc, char *argv[]) {
     g.checkGround(dirt_cube.offsets);
     g.gravity();
     g.applyKeyboardInput();
-    dirt_cube.checkChunks(g.eye);
+    bool updateWorld = dirt_cube.checkChunks(g.eye);
+    if (updateWorld)
+      water.generateWater(dirt_cube.offsets);
     g.updateMatrices();
     g.clearRender();
 

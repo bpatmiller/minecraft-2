@@ -42,8 +42,6 @@ struct Cube {
 
   std::vector<glm::ivec2> chunks = {{0, 0}};
 
-  bool checking = false;
-
   Cube() {
     offsets.clear();
     for (auto c : chunks) {
@@ -55,10 +53,7 @@ struct Cube {
     VAO.setLayout({4}, true);
   }
 
-  void checkChunks(glm::vec3 &eye) {
-    if (checking)
-      return;
-    checking = true;
+  bool checkChunks(glm::vec3 &eye) {
 
     float xsign = 1;
     float zsign = 1;
@@ -67,57 +62,53 @@ struct Cube {
     if (eye.z < 0)
       zsign = -1;
 
-    float x = eye.x / (2 * BlockSize) + (xsign * 0.5);
-    float y = eye.z / (2 * BlockSize) + (zsign * 0.5);
+    int x = (int)(eye.x / (2 * BlockSize) + (xsign * 0.5));
+    int y = (int)(eye.z / (2 * BlockSize) + (zsign * 0.5));
 
-    float r = (1.0f - glm::fmod(x, 1.0f));
-    float u = (1.0f - glm::fmod(y, 1.0f));
+    std::vector<glm::ivec2> closest_chunks;
+    std::vector<glm::ivec2> addChunks;
 
-    if (glm::abs(r) < 0.25) {
-      if (r > 0) {
-        x++;
-      } else {
-        x--;
+    for (int i = -1; i <= 1; i++) {
+      for (int j = -1; j <= 1; j++) {
+        closest_chunks.emplace_back(glm::ivec2(x + i, y + j));
       }
     }
 
-    if (glm::abs(u) < 0.25) {
-      if (u > 0) {
-        y++;
-      } else {
-        y--;
+    // for each candidate chunk
+    for (auto cc : closest_chunks) {
+      bool found = false;
+      // check existing chunks
+      for (auto c : chunks) {
+        if (c.x == cc.x && c.y == cc.y) {
+          found = true;
+        }
       }
+      if (!found)
+        addChunks.emplace_back(cc);
     }
-
-    glm::ivec2 closest_chunk = glm::ivec2((int)x, (int)y);
-    // std::cout << "closest chunk: " << glm::to_string(closest_chunk)
-    //           << std::endl;
-
-    for (auto c : chunks) {
-      // std::cout << "c.x: " << closest_chunk.x << "c.y: " << closest_chunk.y
-      //           << std::endl;
-      if (c.x == closest_chunk.x && c.y == closest_chunk.y) {
-        checking = false;
-        return;
-      }
-    }
-    std::cout << "chunk added" << std::endl;
-    checking = false;
-    updateChunk(closest_chunk);
+    updateChunk(addChunks);
+    return (addChunks.size() != 0);
   }
 
-  void updateChunk(glm::ivec2 new_chunk) {
-    chunks.emplace_back(new_chunk);
-    generateTerrain(new_chunk);
-    VAO.ib.bindVertices(offsets);
+  void updateChunk(std::vector<glm::ivec2> new_chunks) {
+    for (auto c : new_chunks) {
+      std::cout << "chunk added" << std::endl;
+      chunks.emplace_back(c);
+      generateTerrain(c);
+    }
 
-    // if (chunks.size() > 4) {
-    //   chunks.erase(chunks.begin());
-    //   offsets.clear();
-    //   for (auto c : chunks) {
-    //     generateTerrain(c);
-    //   }
-    // }
+    if (chunks.size() > 30) {
+      std::cout << "erasing chunks" << std::endl;
+      offsets.clear();
+      for (int i = 0; i < 8; i++) {
+        chunks.erase(chunks.begin());
+      }
+      for (auto c : chunks) {
+        generateTerrain(c);
+      }
+    }
+
+    VAO.ib.bindVertices(offsets);
   }
 
   void draw() {
