@@ -37,6 +37,7 @@ public:
   bool cols = false;
   bool cola = false;
   bool cold = false;
+  int loopy = 0;
   glm::vec3 momentum = glm::vec3(0);
   glm::vec3 light_position = glm::vec3(-3.0f, 10.0f, 5.0f);
 

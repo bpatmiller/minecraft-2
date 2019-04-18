@@ -89,6 +89,7 @@ int main(int argc, char *argv[]) {
     // sampler uniforms
     texquad_shader.setInt("screenTex", 0);
     texquad_shader.setInt("depTex", 1);
+    texquad_shader.setInt("loopy", g.loopy);
     texQuad.draw();
 
     // water pass ------------------------- //

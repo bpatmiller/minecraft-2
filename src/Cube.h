@@ -68,8 +68,8 @@ struct Cube {
     std::vector<glm::ivec2> closest_chunks;
     std::vector<glm::ivec2> addChunks;
 
-    for (int i = -1; i <= 1; i++) {
-      for (int j = -1; j <= 1; j++) {
+    for (int i = -2; i <= 2; i++) {
+      for (int j = -2; j <= 2; j++) {
         closest_chunks.emplace_back(glm::ivec2(x + i, y + j));
       }
     }
@@ -97,7 +97,7 @@ struct Cube {
       generateTerrain(c);
     }
 
-    if (chunks.size() > 30) {
+    if (chunks.size() > 60) {
       // std::cout << "erasing chunks" << std::endl;
       offsets.clear();
       for (int i = 0; i < 8; i++) {

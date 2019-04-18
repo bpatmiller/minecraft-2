@@ -77,7 +77,7 @@ void Gui::updateMatrices() {
   translate = glm::translate(translate, -eye);
   view_matrix = glm::mat4_cast(orientation) * translate;
   projection_matrix = glm::perspective(
-      glm::radians(90.f), ((float)window_width) / window_height, 0.1f, 200.f);
+      glm::radians(80.0f), ((float)window_width) / window_height, 0.1f, 200.f);
   model_matrix = glm::mat4(1.0f);
 }
 
@@ -120,9 +120,12 @@ void Gui::keyCallback(int key, int scancode, int action, int mods) {
              action != GLFW_RELEASE) {
     // std::cout << "flying mode toggle" << std::endl;
     flying = !flying;
+  } else if (key == GLFW_KEY_L && action != GLFW_RELEASE)
+  {
+    loopy = 1 - loopy;
   }
   if (mods & GLFW_MOD_SHIFT) {
-    momentum += fdir;
+    momentum += fdir + glm::cross(sdir, fdir);
     eye += momentum;
   }
 
