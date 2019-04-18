@@ -51,6 +51,7 @@ int main(int argc, char *argv[]) {
     g.checkGround(dirt_cube.offsets);
     g.gravity();
     g.applyKeyboardInput();
+    dirt_cube.checkChunks(g.eye);
     g.updateMatrices();
     g.clearRender();
 

@@ -1,6 +1,8 @@
 #include "Config.h"
 #include "VAO.h"
+#include <algorithm>
 #include <glm/glm.hpp>
+#include <glm/gtx/common.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
@@ -38,12 +40,84 @@ struct Cube {
 
   std::vector<glm::vec4> offsets = {{0.0f, 0.0f, 0.0f, 0.0f}};
 
+  std::vector<glm::ivec2> chunks = {{0, 0}};
+
+  bool checking = false;
+
   Cube() {
-    generateTerrain();
+    offsets.clear();
+    for (auto c : chunks) {
+      generateTerrain(c);
+    }
     VAO.vb.bindVertices(vertices);
     VAO.ib.bindVertices(offsets);
     VAO.setLayout({3}, false);
     VAO.setLayout({4}, true);
+  }
+
+  void checkChunks(glm::vec3 &eye) {
+    if (checking)
+      return;
+    checking = true;
+
+    float xsign = 1;
+    float zsign = 1;
+    if (eye.x < 0)
+      xsign = -1;
+    if (eye.z < 0)
+      zsign = -1;
+
+    float x = eye.x / (2 * BlockSize) + (xsign * 0.5);
+    float y = eye.z / (2 * BlockSize) + (zsign * 0.5);
+
+    float r = (1.0f - glm::fmod(x, 1.0f));
+    float u = (1.0f - glm::fmod(y, 1.0f));
+
+    if (glm::abs(r) < 0.25) {
+      if (r > 0) {
+        x++;
+      } else {
+        x--;
+      }
+    }
+
+    if (glm::abs(u) < 0.25) {
+      if (u > 0) {
+        y++;
+      } else {
+        y--;
+      }
+    }
+
+    glm::ivec2 closest_chunk = glm::ivec2((int)x, (int)y);
+    // std::cout << "closest chunk: " << glm::to_string(closest_chunk)
+    //           << std::endl;
+
+    for (auto c : chunks) {
+      // std::cout << "c.x: " << closest_chunk.x << "c.y: " << closest_chunk.y
+      //           << std::endl;
+      if (c.x == closest_chunk.x && c.y == closest_chunk.y) {
+        checking = false;
+        return;
+      }
+    }
+    std::cout << "chunk added" << std::endl;
+    checking = false;
+    updateChunk(closest_chunk);
+  }
+
+  void updateChunk(glm::ivec2 new_chunk) {
+    chunks.emplace_back(new_chunk);
+    generateTerrain(new_chunk);
+    VAO.ib.bindVertices(offsets);
+
+    // if (chunks.size() > 4) {
+    //   chunks.erase(chunks.begin());
+    //   offsets.clear();
+    //   for (auto c : chunks) {
+    //     generateTerrain(c);
+    //   }
+    // }
   }
 
   void draw() {
@@ -52,14 +126,12 @@ struct Cube {
                             indices.data(), offsets.size());
   }
 
-  void generateTerrain() {
-    offsets.clear();
+  void generateTerrain(glm::ivec2 chunk) {
 
-    int minx = -BlockSize;
-    int maxx = BlockSize;
-    int minz = -BlockSize;
-    ;
-    int maxz = BlockSize;
+    int minx = -BlockSize + BlockSize * 2 * chunk.x;
+    int maxx = BlockSize + BlockSize * 2 * chunk.x;
+    int minz = -BlockSize + BlockSize * 2 * chunk.y;
+    int maxz = BlockSize + BlockSize * 2 * chunk.y;
 
     // generate dirt
     for (int x = minx; x < maxx; x++) {
