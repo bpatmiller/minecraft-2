@@ -97,7 +97,7 @@ struct Cube {
       generateTerrain(c);
     }
 
-    if (chunks.size() > 50) {
+    if (chunks.size() > 30) {
       // std::cout << "erasing chunks" << std::endl;
       offsets.clear();
       for (int i = 0; i < 8; i++) {
