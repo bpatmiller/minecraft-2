@@ -118,7 +118,7 @@ void Gui::keyCallback(int key, int scancode, int action, int mods) {
     glfwSetWindowShouldClose(window, GLFW_TRUE);
   } else if (key == GLFW_KEY_F && (mods & GLFW_MOD_CONTROL) &&
              action != GLFW_RELEASE) {
-    std::cout << "flying mode toggle" << std::endl;
+    // std::cout << "flying mode toggle" << std::endl;
     flying = !flying;
   }
   if (mods & GLFW_MOD_SHIFT) {

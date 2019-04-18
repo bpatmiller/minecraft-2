@@ -18,7 +18,12 @@ struct Water {
 
   std::vector<glm::vec3> offsets = {{0.0f, 0.0f, 0.0f}};
 
-  Water(std::vector<glm::vec4> &block_offsets) { generateWater(block_offsets); }
+  Water(std::vector<glm::vec4> &block_offsets) {
+    generateWater(block_offsets);
+    VAO.vb.bindVertices(vertices);
+    VAO.setLayout({3}, false);
+    VAO.setLayout({3}, true);
+  }
 
   void draw() {
     VAO.bind();
@@ -37,9 +42,6 @@ struct Water {
         }
       }
     }
-    VAO.vb.bindVertices(vertices);
     VAO.ib.bindVertices(offsets);
-    VAO.setLayout({3}, false);
-    VAO.setLayout({3}, true);
   }
 };

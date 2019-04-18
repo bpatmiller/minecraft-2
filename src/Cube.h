@@ -92,13 +92,13 @@ struct Cube {
 
   void updateChunk(std::vector<glm::ivec2> new_chunks) {
     for (auto c : new_chunks) {
-      std::cout << "chunk added" << std::endl;
+      // std::cout << "chunk added" << std::endl;
       chunks.emplace_back(c);
       generateTerrain(c);
     }
 
-    if (chunks.size() > 30) {
-      std::cout << "erasing chunks" << std::endl;
+    if (chunks.size() > 50) {
+      // std::cout << "erasing chunks" << std::endl;
       offsets.clear();
       for (int i = 0; i < 8; i++) {
         chunks.erase(chunks.begin());

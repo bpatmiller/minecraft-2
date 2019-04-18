@@ -87,7 +87,6 @@ public:
 
   bool groundBlock(glm::vec4 &block);
   bool collideBlock(glm::vec4 &block, glm::vec3 &offset, float move_speed);
-  void checkChunks(std::vector<glm::ivec2> &chunks);
 
   void swapPoll();
   void clearRender();
